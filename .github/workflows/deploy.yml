@@ -27,11 +27,11 @@ jobs:
         cache: maven
 
     - name: Build with Maven
-      run: ./mvnw clean package -DskipTests
+      run: mvn clean package -DskipTests
 
     - name: Build and Push Docker Image using Jib
       run: |
-        ./mvnw com.google.cloud.tools:jib-maven-plugin:build \
+        mvn com.google.cloud.tools:jib-maven-plugin:build \
           -Dimage=${{ secrets.DOCKER_USERNAME }}/s3-demo-application:${{ steps.prep.outputs.tag }} \
           -Djib.to.auth.username=${{ secrets.DOCKER_USERNAME }} \
           -Djib.to.auth.password=${{ secrets.DOCKER_PASSWORD }}
