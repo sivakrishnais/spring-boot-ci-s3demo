@@ -34,7 +34,7 @@ jobs:
         mvn com.google.cloud.tools:jib-maven-plugin:build \
           -Dimage=docker.io/eazylearning/s3-demo-application:${{ steps.prep.outputs.tag }} \
           -Djib.to.auth.username=${{ secrets.DOCKER_USERNAME }} \
-          -Djib.to.auth.password=${{ secrets.DOCKER_PASSWORD }}
+          -Djib.to.auth.password=${{ secrets.DOCKERHUB_TOKEN }}
 
   deploy:
     runs-on: ubuntu-latest
@@ -50,7 +50,7 @@ jobs:
         key: ${{ secrets.EC2_SSH_KEY }}
         script: |
           # Login to Docker Hub
-          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
           
           # Stop and remove existing container if it exists
           docker stop s3-demo-app || true
