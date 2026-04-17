@@ -32,7 +32,7 @@ jobs:
     - name: Build and Push Docker Image using Jib
       run: |
         mvn com.google.cloud.tools:jib-maven-plugin:build \
-          -Dimage=${{ secrets.DOCKER_USERNAME }}/s3-demo-application:${{ steps.prep.outputs.tag }} \
+          -Dimage=docker.io/eazylearning/s3-demo-application:${{ steps.prep.outputs.tag }} \
           -Djib.to.auth.username=${{ secrets.DOCKER_USERNAME }} \
           -Djib.to.auth.password=${{ secrets.DOCKER_PASSWORD }}
 
@@ -57,7 +57,7 @@ jobs:
           docker rm s3-demo-app || true
           
           # Pull the new image version
-          docker pull ${{ secrets.DOCKER_USERNAME }}/s3-demo-application:${{ needs.build.outputs.image_tag }}
+          docker pull eazylearning/s3-demo-application:${{ needs.build.outputs.image_tag }}
           
           # Run the new container
           docker run -d \
@@ -67,7 +67,7 @@ jobs:
             -e AWS_SECRET_KEY=${{ secrets.AWS_SECRET_KEY }} \
             -e AWS_REGION=${{ secrets.AWS_REGION }} \
             -e AWS_BUCKET_NAME=${{ secrets.AWS_BUCKET_NAME }} \
-            ${{ secrets.DOCKER_USERNAME }}/s3-demo-application:${{ needs.build.outputs.image_tag }}
+            eazylearning/s3-demo-application:${{ needs.build.outputs.image_tag }}
           
           # Clean up old images to save space
           docker image prune -a -f
