@@ -52,9 +52,13 @@ jobs:
           # Login to Docker Hub
           docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
           
-          # Stop and remove existing container if it exists
+          # Stop and remove any container using port 8080
+          docker ps -q --filter "publish=8080" | xargs -r docker stop || true
+          docker ps -aq --filter "publish=8080" | xargs -r docker rm -f || true
+          
+          # Also specifically remove the named container if it exists
           docker stop s3-demo-app || true
-          docker rm s3-demo-app || true
+          docker rm -f s3-demo-app || true
           
           # Pull the new image version
           docker pull eazylearning/s3-demo-application:${{ needs.build.outputs.image_tag }}
