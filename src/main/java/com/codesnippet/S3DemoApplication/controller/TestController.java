@@ -10,7 +10,7 @@ public class TestController {
 
     @GetMapping("/test")
     public String test() {
-        return "Hi siva krishna you did the CI/CD pipeline successfully";
+        return "hi siva successful updation done";
     }
 
     @GetMapping("/test1")
